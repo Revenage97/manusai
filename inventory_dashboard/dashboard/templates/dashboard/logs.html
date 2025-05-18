@@ -1,0 +1,95 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Log Aktivitas - Dashboard Manajemen Stok{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-list-check"></i> Log Aktivitas</h2>
+            <p class="text-muted">Riwayat aktivitas pengguna pada sistem</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Daftar Aktivitas</h5>
+                    <div class="input-group" style="width: 300px;">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Cari aktivitas...">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover" id="logsTable">
+                            <thead>
+                                <tr>
+                                    <th>Waktu</th>
+                                    <th>Pengguna</th>
+                                    <th>Aktivitas</th>
+                                    <th>Detail</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for log in logs %}
+                                <tr>
+                                    <td>{{ log.timestamp|date:"d/m/Y H:i:s" }}</td>
+                                    <td>{{ log.user.username }}</td>
+                                    <td>
+                                        {% if log.action == 'login' %}
+                                            <span class="badge bg-success">Login</span>
+                                        {% elif log.action == 'logout' %}
+                                            <span class="badge bg-secondary">Logout</span>
+                                        {% elif log.action == 'upload' %}
+                                            <span class="badge bg-primary">Upload File</span>
+                                        {% elif log.action == 'backup' %}
+                                            <span class="badge bg-info">Backup File</span>
+                                        {% elif log.action == 'password' %}
+                                            <span class="badge bg-warning">Ubah Password</span>
+                                        {% else %}
+                                            <span class="badge bg-dark">{{ log.action }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ log.details }}</td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center">Belum ada aktivitas yang tercatat.</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const table = document.getElementById('logsTable');
+        const rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        
+        searchInput.addEventListener('keyup', function() {
+            const searchText = searchInput.value.toLowerCase();
+            
+            for (let i = 0; i < rows.length; i++) {
+                const rowData = rows[i].textContent.toLowerCase();
+                if (rowData.indexOf(searchText) > -1) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

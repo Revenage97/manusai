@@ -1,0 +1,72 @@
+{% extends 'dashboard/base.html' %}
+
+{% block title %}Upload File Excel - Dashboard Manajemen Stok{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-upload"></i> Upload File Excel</h2>
+            <p class="text-muted">Upload file Excel untuk memperbarui data stok barang</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Upload File</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="excel_file" class="form-label">Pilih File Excel</label>
+                            <input class="form-control" type="file" id="excel_file" name="excel_file" accept=".xlsx, .xls" required>
+                            <div class="form-text">Format file: Excel (.xlsx, .xls)</div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="alert alert-info">
+                                <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Informasi Format</h6>
+                                <p class="mb-0">File Excel harus memiliki kolom berikut:</p>
+                                <ul>
+                                    <li>Kode</li>
+                                    <li>Nama Barang</li>
+                                    <li>Kategori</li>
+                                    <li>Harga Jual</li>
+                                    <li>Total Stok</li>
+                                </ul>
+                                <p class="mb-0">Pastikan format sesuai dengan template yang disediakan.</p>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-upload"></i> Upload
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Petunjuk Upload</h5>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        <h6 class="alert-heading"><i class="bi bi-exclamation-triangle"></i> Perhatian</h6>
+                        <p>Upload file Excel akan menggantikan semua data stok yang ada saat ini.</p>
+                    </div>
+                    <ol>
+                        <li>Siapkan file Excel dengan format yang sesuai</li>
+                        <li>Pastikan semua kolom terisi dengan benar</li>
+                        <li>Pilih file Excel yang akan diupload</li>
+                        <li>Klik tombol Upload</li>
+                        <li>Tunggu hingga proses upload selesai</li>
+                    </ol>
+                    <p>Setelah upload berhasil, data stok akan diperbarui secara otomatis.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
